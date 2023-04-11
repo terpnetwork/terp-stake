@@ -3,7 +3,6 @@ import { Route, Switch } from 'react-router-dom';
 import Home from './containers/Home';
 import Stake from './containers/Stake';
 import Proposals from './containers/Proposals';
-import ProposalDialog from './containers/Proposals/ProposalDialog';
 
 const routes = [{
     path: '/',
@@ -14,9 +13,6 @@ const routes = [{
 }, {
     path: '/proposals',
     component: Proposals,
-}, {
-    path: '/proposals/:proposalID',
-    component: ProposalDialog,
 }];
 
 const Router = () => {

@@ -1,16 +1,14 @@
 {
-  "name": "community",
+  "name": "terp-stake",
   "version": "0.0.1",
   "main": "index.js",
-  "repository": "git@github.com:OmniFlix/community-ui.git",
+  "repository": "git@github.com:terpnetwork/trep-stake.git",
   "license": "MIT",
   "private": true,
   "dependencies": {
     "@cosmjs/amino": "^0.26.5",
     "@cosmjs/proto-signing": "^0.26.5",
     "@cosmjs/stargate": "^0.26.5",
-    "@cosmostation/cosmos-client": "^0.0.1",
-    "@cosmostation/extension-client": "^0.1.7",
     "@material-ui/core": "^4.11.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.58",
@@ -18,7 +16,6 @@
     "history": "^5.0.0",
     "js-base64": "^3.6.0",
     "latest": "^0.2.0",
-    "long": "^5.2.0",
     "moment": "^2.29.1",
     "mui-datatables": "^3.7.7",
     "prop-types": "^15.7.2",
@@ -33,7 +30,7 @@
     "redux-thunk": "^2.3.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": " export NODE_OPTIONS=--openssl-legacy-provider && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

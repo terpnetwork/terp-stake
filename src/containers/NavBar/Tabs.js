@@ -44,8 +44,7 @@ class Tabs extends Component {
         if (this.props.open) {
             this.props.hideProposalDialog();
         }
-        if ((newValue === this.state.value) && (this.props.match &&
-            this.props.match.params && !this.props.match.params.proposalID)) {
+        if (newValue === this.state.value) {
             return;
         }
 
@@ -101,11 +100,6 @@ Tabs.propTypes = {
         pathname: PropTypes.string.isRequired,
     }).isRequired,
     open: PropTypes.bool.isRequired,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
 };
 
 const stateToProps = (state) => {

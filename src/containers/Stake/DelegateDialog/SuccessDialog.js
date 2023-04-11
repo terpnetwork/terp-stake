@@ -7,7 +7,6 @@ import variables from '../../../utils/variables';
 import { hideDelegateSuccessDialog } from '../../../actions/stake';
 import success from '../../../assets/stake/success.svg';
 import { config } from '../../../config';
-import { withRouter } from 'react-router-dom';
 
 const SuccessDialog = (props) => {
     const handleRedirect = () => {
@@ -15,14 +14,6 @@ const SuccessDialog = (props) => {
             const link = `${config.EXPLORER_URL}/transactions/${props.hash}`;
             window.open(link, '_blank');
         }
-    };
-
-    const handleClose = () => {
-        if (props.match && props.match.params && props.match.params.proposalID) {
-            props.history.push('/proposals');
-        }
-
-        props.handleClose();
     };
 
     const validatorDetails = props.validatorList && props.validatorList.length &&
@@ -36,19 +27,19 @@ const SuccessDialog = (props) => {
             aria-labelledby="delegate-dialog-title"
             className="dialog delegate_dialog result"
             open={props.open}
-            onClose={handleClose}>
+            onClose={props.handleClose}>
             <DialogContent className="content">
                 <div className="heading">
                     <img alt="success" src={success}/>
                     {props.name
                         ? <h1>{props.name + 'd Successfully'}</h1>
-                        : props.match && props.match.params && props.match.params.proposalID
-                            ? <h1>{variables[props.lang].vote_success}</h1>
-                            : props.claimValidator && props.claimValidator !== 'none'
-                                ? <h1>{variables[props.lang].claimed_success}</h1>
+                        : props.claimValidator && props.claimValidator !== 'none'
+                            ? <h1>{variables[props.lang].claimed_success}</h1>
+                            : props.proposalOpen
+                                ? <h1>{variables[props.lang].vote_success}</h1>
                                 : <h1>{variables[props.lang].success}</h1>}
                 </div>
-                {props.match && props.match.params && props.match.params.proposalID && props.hash
+                {props.proposalOpen && props.hash
                     ? <div className="row">
                         <p>{variables[props.lang]['transaction_hash']}</p>
                         <div
@@ -56,7 +47,7 @@ const SuccessDialog = (props) => {
                             onClick={handleRedirect}>
                             <p className="name">{props.hash}</p>
                             {props.hash &&
-                                props.hash.slice(props.hash.length - 6, props.hash.length)}
+                            props.hash.slice(props.hash.length - 6, props.hash.length)}
                         </div>
                     </div>
                     : !props.name
@@ -69,7 +60,7 @@ const SuccessDialog = (props) => {
                                         onClick={handleRedirect}>
                                         <p className="name">{props.hash}</p>
                                         {props.hash &&
-                                            props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                        props.hash.slice(props.hash.length - 6, props.hash.length)}
                                     </div>
                                 </div>
                                 <div className="row">
@@ -87,7 +78,7 @@ const SuccessDialog = (props) => {
                                     onClick={handleRedirect}>
                                     <p className="name">{props.hash}</p>
                                     {props.hash &&
-                                        props.hash.slice(props.hash.length - 6, props.hash.length)}
+                                    props.hash.slice(props.hash.length - 6, props.hash.length)}
                                 </div>
                             </div>
                             <div className="row">
@@ -95,7 +86,7 @@ const SuccessDialog = (props) => {
                                 <div className="hash_text" title={props.address}>
                                     <p className="name">{props.address}</p>
                                     {props.address &&
-                                        props.address.slice(props.address.length - 6, props.address.length)}
+                                    props.address.slice(props.address.length - 6, props.address.length)}
                                 </div>
                             </div>
                             {props.name === 'Redelegate'
@@ -106,7 +97,7 @@ const SuccessDialog = (props) => {
                                             <div className="hash_text" title={props.validator}>
                                                 <p className="name">{props.validator}</p>
                                                 {props.validator &&
-                                                    props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
                                             </div>
                                             <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                                 ? `(${validatorDetails.description.moniker})`
@@ -119,7 +110,7 @@ const SuccessDialog = (props) => {
                                             <div className="hash_text" title={props.toValidator}>
                                                 <p className="name">{props.toValidator}</p>
                                                 {props.toValidator &&
-                                                    props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
+                                                props.toValidator.slice(props.toValidator.length - 6, props.toValidator.length)}
                                             </div>
                                             <p>{toValidatorDetails && toValidatorDetails.description && toValidatorDetails.description.moniker
                                                 ? `(${toValidatorDetails.description.moniker})`
@@ -133,7 +124,7 @@ const SuccessDialog = (props) => {
                                         <div className="hash_text" title={props.validator}>
                                             <p className="name">{props.validator}</p>
                                             {props.validator &&
-                                                props.validator.slice(props.validator.length - 6, props.validator.length)}
+                                            props.validator.slice(props.validator.length - 6, props.validator.length)}
                                         </div>
                                         <p>{validatorDetails && validatorDetails.description && validatorDetails.description.moniker
                                             ? `(${validatorDetails.description.moniker})`
@@ -149,7 +140,7 @@ const SuccessDialog = (props) => {
                         </>}
             </DialogContent>
             <DialogActions className="footer">
-                <Button variant="contained" onClick={handleClose}>
+                <Button variant="contained" onClick={props.handleClose}>
                     {variables[props.lang].done}
                 </Button>
             </DialogActions>
@@ -161,20 +152,13 @@ SuccessDialog.propTypes = {
     claimValidator: PropTypes.string.isRequired,
     handleClose: PropTypes.func.isRequired,
     hash: PropTypes.string.isRequired,
-    history: PropTypes.shape({
-        push: PropTypes.func.isRequired,
-    }).isRequired,
     lang: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
+    proposalOpen: PropTypes.bool.isRequired,
     toValidator: PropTypes.string.isRequired,
     validator: PropTypes.string.isRequired,
     address: PropTypes.string,
-    match: PropTypes.shape({
-        params: PropTypes.shape({
-            proposalID: PropTypes.string,
-        }),
-    }),
     tokens: PropTypes.any,
     validatorList: PropTypes.arrayOf(
         PropTypes.shape({
@@ -199,6 +183,7 @@ const stateToProps = (state) => {
         toValidator: state.stake.toValidator.value,
         validatorList: state.stake.validators.list,
         claimValidator: state.stake.claimDialog.validator,
+        proposalOpen: state.proposals.dialog.open,
     };
 };
 
@@ -206,4 +191,4 @@ const actionToProps = {
     handleClose: hideDelegateSuccessDialog,
 };
 
-export default withRouter(connect(stateToProps, actionToProps)(SuccessDialog));
+export default connect(stateToProps, actionToProps)(SuccessDialog);

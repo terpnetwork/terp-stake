@@ -1,12 +1,12 @@
-inSync by OmniFlix (for Communities)
+Terp-Stake (for Communities)
 ===
 
-inSync is a collaborative interface for an entire community (or) blockchain network to:
+Terp-Stake is a collaborative interface for an entire community (or) blockchain network to:
 
 - identify stakeholders such as validator node hosts (will expand to other types of node hosts depending on the network)
 - discover proposals & more!
 
-Currently, the aim of inSync is to be the default/defacto interface when bootstrapping community activities of a
+Currently, the aim of Terp-Stake is to be the default/defacto interface when bootstrapping community activities of a
 specific chain (on testnet or mainnet).
 
 # Requirements
@@ -18,31 +18,32 @@ yarn
 1. clone repository and install packages
 
   ```sh
-  git clone https://github.com/OmniFlix/insync.git
-  cd insync
+  git clone https://github.com/terpnetwork/terp-stake.git
+  cd terp-stake
   yarn
   ```
 
 2. update chain config
 
-`NOTE:` below is the chain config for omniflix testnet
+`NOTE:` below is the chain config for Terp TestNet
 
 `src/config.js`
 
  ```js
 export const config = {
-    RPC_URL: 'https://rpc.flixnet.omniflix.network',
-    REST_URL: 'https://rest.flixnet.omniflix.network',
-    EXPLORER_URL: 'https://explorer.omniflix.network',
-    STAKING_URL: 'https://flix.omniflix.co/stake',
-    NETWORK_NAME: 'OmniFlix',
+    RPC_URL: 'https://',
+    REST_URL: 'https://',
+    EXPLORER_URL: 'https://',
+    STAKING_URL: 'https://',
+    NETWORK_NAME: 'Terp-Network',
     NETWORK_TYPE: 'testnet',
-    CHAIN_ID: 'flixnet-3',
-    CHAIN_NAME: 'OmniFlix FlixNet-3',
-    COIN_DENOM: 'FLIX',
-    COIN_MINIMAL_DENOM: 'uflix',
+    CHAIN_ID: 'morocco-1',
+    CHAIN_NAME: 'Terp-Network',
+    COIN_DENOM: 'TERPX',
+    COIN_MINIMAL_DENOM: 'uterpx',
     COIN_DECIMALS: 6,
-    PREFIX: 'omniflix',
+    FEE_CURRENCY: 'upersyx'
+    PREFIX: 'terp',
     COIN_TYPE: 118,
     COINGECKO_ID: '-',
     GAS_PRICE_STEP_LOW: 0.0025,
