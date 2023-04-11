@@ -48,8 +48,8 @@ const DelegateDialog = (props) => {
             },
             fee: {
                 amount: [{
-                    amount: String(gasValue * config.GAS_PRICE_STEP_AVERAGE),
-                    denom: config.COIN_MINIMAL_DENOM,
+                    amount: String(gasValue * config.GAS_PRICE_STEP_HIGH),
+                    denom: config.GAS_COIN_MINIMAL_DENOM,
                 }],
                 gas: String(gasValue),
             },
@@ -100,7 +100,7 @@ const DelegateDialog = (props) => {
                 validatorAddress: props.validator,
                 amount: {
                     amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
-                    denom: config.COIN_MINIMAL_DENOM,
+                    denom: config.GOV_COIN_MINIMAL_DENOM,
                 },
             };
         case 'Redelegate':
@@ -110,7 +110,7 @@ const DelegateDialog = (props) => {
                 validatorDstAddress: props.toValidator,
                 amount: {
                     amount: String(props.amount * (10 ** config.COIN_DECIMALS)),
-                    denom: config.COIN_MINIMAL_DENOM,
+                    denom: config.GOV_COIN_MINIMAL_DENOM,
                 },
             };
         default:
@@ -121,7 +121,7 @@ const DelegateDialog = (props) => {
     let staked = props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
-    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.GOV_COIN_MINIMAL_DENOM);
     const available = (balance && balance.amount && Number(balance.amount));
 
     const vesting = props.vestingBalance && props.vestingBalance.value && props.vestingBalance.value['base_vesting_account'] &&

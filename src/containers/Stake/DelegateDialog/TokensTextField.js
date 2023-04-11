@@ -7,7 +7,7 @@ import variables from '../../../utils/variables';
 import { connect } from 'react-redux';
 
 const TokensTextField = (props) => {
-    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.GOV_COIN_MINIMAL_DENOM);
     const available = (balance && balance.amount && Number(balance.amount));
     const availableTokens = available / (10 ** config.COIN_DECIMALS);
     const staked = props.delegations.reduce((accumulator, currentValue) => {

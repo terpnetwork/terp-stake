@@ -17,7 +17,7 @@ const TokenDetails = (props) => {
     const staked = props.delegations.reduce((accumulator, currentValue) => {
         return accumulator + Number(currentValue.balance.amount);
     }, 0);
-    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+    const balance = props.balance && props.balance.length && props.balance.find((val) => val.denom === config.GOV_COIN_MINIMAL_DENOM);
     const available = (balance && balance.amount && Number(balance.amount));
     let unStaked = 0;
     props.unBondingDelegations.map((delegation) => {
@@ -31,7 +31,7 @@ const TokenDetails = (props) => {
     });
 
     let rewards = props.rewards && props.rewards.total && props.rewards.total.length &&
-        props.rewards.total.find((val) => val.denom === config.COIN_MINIMAL_DENOM);
+        props.rewards.total.find((val) => val.denom === config.GAS_COIN_MINIMAL_DENOM);
     rewards = rewards && rewards.amount ? rewards.amount / 10 ** config.COIN_DECIMALS : 0;
 
     return (

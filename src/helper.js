@@ -6,11 +6,14 @@ import { getOfflineSigner } from '@cosmostation/cosmos-client';
 
 const chainId = config.CHAIN_ID;
 const chainName = config.CHAIN_NAME;
-const coinDenom = config.COIN_DENOM;
-const coinMinimalDenom = config.COIN_MINIMAL_DENOM;
+const govcoinDenom = config.GOV_COIN_DENOM;
+const gascoinDenom = config.GAS_COIN_DENOM;
+const govcoinMinimalDenom = config.GOV_COIN_MINIMAL_DENOM;
+const gascoinMinimalDenom = config.GAS_COIN_MINIMAL_DENOM;
 const coinDecimals = config.COIN_DECIMALS;
 const prefix = config.PREFIX;
-const coinGeckoId = config.COINGECKO_ID;
+const govcoinGeckoId = config.GOV_COINGECKO_ID;
+const gascoinGeckoId = config.GAS_COINGECKO_ID;
 
 const chainConfig = {
     chainId: chainId,
@@ -18,13 +21,13 @@ const chainConfig = {
     rpc: RPC_URL,
     rest: REST_URL,
     stakeCurrency: {
-        coinDenom,
-        coinMinimalDenom,
+        govcoinDenom,
+        govcoinMinimalDenom,
         coinDecimals,
-        coinGeckoId,
+        govcoinGeckoId,
     },
     bip44: {
-        coinType: 118,
+        coinType: config.COIN_TYPE,
     },
     bech32Config: {
         bech32PrefixAccAddr: `${prefix}`,
@@ -36,26 +39,32 @@ const chainConfig = {
     },
     currencies: [
         {
-            coinDenom,
-            coinMinimalDenom,
+            govcoinDenom,
+            govcoinMinimalDenom,
             coinDecimals,
-            coinGeckoId,
+            govcoinGeckoId,
+        },
+        {
+            gascoinDenom,
+            gascoinMinimalDenom,
+            coinDecimals,
+            gascoinGeckoId,
         },
     ],
     feeCurrencies: [
         {
-            coinDenom,
-            coinMinimalDenom,
+            gascoinDenom,
+            gascoinMinimalDenom,
             coinDecimals,
-            coinGeckoId,
+            gascoinGeckoId,
+            gasPriceStep: {
+                low: config.GAS_PRICE_STEP_LOW,
+                average: config.GAS_PRICE_STEP_AVERAGE,
+                high: config.GAS_PRICE_STEP_HIGH,
+            },
         },
     ],
     coinType: config.COIN_TYPE,
-    gasPriceStep: {
-        low: config.GAS_PRICE_STEP_LOW,
-        average: config.GAS_PRICE_STEP_AVERAGE,
-        high: config.GAS_PRICE_STEP_HIGH,
-    },
     features: config.FEATURES,
     walletUrlForStaking: config.STAKING_URL,
 };

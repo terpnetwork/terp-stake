@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../assets/OmniFlix.svg';
+import logo from '../../assets/main_logo.png';
 import './index.css';
 import DisconnectButton from './DisconnectButton';
 import Tabs from './Tabs';
@@ -26,7 +26,6 @@ import {
     fetchValidatorImage,
     fetchValidatorImageSuccess,
     getDelegatedValidatorsDetails,
-    getInActiveValidators,
     getValidators,
 } from '../../actions/stake';
 import { withRouter } from 'react-router-dom';
@@ -71,16 +70,16 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
                         }
 
                         return null;
@@ -94,16 +93,16 @@ class NavBar extends Component {
             const array = [];
             this.props.proposals.map((val) => {
                 const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                    Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                    Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                 if (!filter) {
-                    if (this.props.home && val.status !== 2) {
+                    if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                         return null;
                     }
 
-                    array.push(val.id);
+                    array.push(val.proposal_id);
                 }
-                if (val.status === 2) {
-                    this.props.fetchProposalTally(val.id);
+                if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                    this.props.fetchProposalTally(val.proposal_id);
                 }
 
                 return null;
@@ -117,15 +116,6 @@ class NavBar extends Component {
 
         if (!this.props.validatorList.length && !this.props.validatorListInProgress && !this.props.proposalTab) {
             this.props.getValidators((data) => {
-                if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
-                    const array = data.filter((val) => val && val.description && val.description.identity);
-                    this.getValidatorImage(0, array);
-                }
-            });
-        }
-
-        if (!this.props.inActiveValidatorsList.length && !this.props.inActiveValidatorsInProgress && !this.props.proposalTab) {
-            this.props.getInActiveValidators((data) => {
                 if (data && data.length && this.props.validatorImages && this.props.validatorImages.length === 0) {
                     const array = data.filter((val) => val && val.description && val.description.identity);
                     this.getValidatorImage(0, array);
@@ -159,11 +149,12 @@ class NavBar extends Component {
                 this.props.proposals && this.props.proposals.length) ||
             ((pp.address !== this.props.address) && (pp.address === '') && (this.props.address !== ''))) {
             this.props.proposals.map((val) => {
-                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.id &&
-                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.id)[0];
+                const votedOption = this.props.voteDetails && this.props.voteDetails.length && val && val.proposal_id &&
+                    this.props.voteDetails.filter((vote) => vote.proposal_id === val.proposal_id)[0];
 
-                if (val.status === 2 && !votedOption && this.props.address) {
-                    this.props.fetchVoteDetails(val.id, this.props.address);
+                if ((val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') &&
+                    !votedOption && this.props.address) {
+                    this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                 }
 
                 return null;
@@ -177,17 +168,17 @@ class NavBar extends Component {
                     const array = [];
                     result.map((val) => {
                         const filter = this.props.proposalDetails && Object.keys(this.props.proposalDetails).length &&
-                            Object.keys(this.props.proposalDetails).find((key) => key === val.id);
+                            Object.keys(this.props.proposalDetails).find((key) => key === val.proposal_id);
                         if (!filter) {
-                            if (this.props.home && val.status !== 2) {
+                            if (this.props.home && (val.status !== 'PROPOSAL_STATUS_VOTING_PERIOD')) {
                                 return null;
                             }
 
-                            array.push(val.id);
+                            array.push(val.proposal_id);
                         }
-                        if (val.status === 2) {
-                            this.props.fetchProposalTally(val.id);
-                            this.props.fetchVoteDetails(val.id, this.props.address);
+                        if (val.status === 2 || val.status === 'PROPOSAL_STATUS_VOTING_PERIOD') {
+                            this.props.fetchProposalTally(val.proposal_id);
+                            this.props.fetchVoteDetails(val.proposal_id, this.props.address);
                         }
 
                         return null;
@@ -389,7 +380,6 @@ NavBar.propTypes = {
     getBalance: PropTypes.func.isRequired,
     getDelegatedValidatorsDetails: PropTypes.func.isRequired,
     getDelegations: PropTypes.func.isRequired,
-    getInActiveValidators: PropTypes.func.isRequired,
     getProposals: PropTypes.func.isRequired,
     getUnBondingDelegations: PropTypes.func.isRequired,
     getValidators: PropTypes.func.isRequired,
@@ -397,8 +387,6 @@ NavBar.propTypes = {
     history: PropTypes.shape({
         push: PropTypes.func.isRequired,
     }).isRequired,
-    inActiveValidatorsInProgress: PropTypes.bool.isRequired,
-    inActiveValidatorsList: PropTypes.array.isRequired,
     lang: PropTypes.string.isRequired,
     proposalDetails: PropTypes.object.isRequired,
     proposals: PropTypes.array.isRequired,
@@ -470,8 +458,6 @@ const stateToProps = (state) => {
         vestingBalanceInProgress: state.accounts.vestingBalance.inProgress,
         voteDetails: state.proposals.voteDetails.value,
         voteDetailsInProgress: state.proposals.voteDetails.inProgress,
-        inActiveValidatorsList: state.stake.inActiveValidators.list,
-        inActiveValidatorsInProgress: state.stake.inActiveValidators.inProgress,
     };
 };
 
@@ -493,7 +479,6 @@ const actionToProps = {
     fetchVoteDetails,
     fetchProposalTally,
     fetchProposalDetails,
-    getInActiveValidators,
     showConnectDialog,
 };
 
