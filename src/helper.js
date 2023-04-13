@@ -21,10 +21,10 @@ const chainConfig = {
     rpc: RPC_URL,
     rest: REST_URL,
     stakeCurrency: {
-        govcoinDenom,
-        govcoinMinimalDenom,
-        coinDecimals,
-        govcoinGeckoId,
+        coinDenom: govcoinDenom,
+        coinMinimalDenom: govcoinMinimalDenom,
+        coinDecimals: coinDecimals,
+        coinGeckoId: govcoinGeckoId,
     },
     bip44: {
         coinType: config.COIN_TYPE,
@@ -37,33 +37,28 @@ const chainConfig = {
         bech32PrefixConsAddr: `${prefix}valcons`,
         bech32PrefixConsPub: `${prefix}valconspub`,
     },
-    currencies: [
-        {
-            govcoinDenom,
-            govcoinMinimalDenom,
-            coinDecimals,
-            govcoinGeckoId,
+    currencies: [{
+        coinDenom: govcoinDenom,
+        coinMinimalDenom: govcoinMinimalDenom,
+        coinDecimals: coinDecimals,
+        coinGeckoId: govcoinGeckoId,
+    }, {
+        coinDenom: gascoinDenom,
+        coinMinimalDenom: gascoinMinimalDenom,
+        coinDecimals: coinDecimals,
+        coinGeckoId: gascoinGeckoId,
+    }],
+    feeCurrencies: [{
+        coinDenom: gascoinDenom,
+        coinMinimalDenom: gascoinMinimalDenom,
+        coinDecimals: coinDecimals,
+        coinGeckoId: gascoinGeckoId,
+        gasPriceStep: {
+            low: config.GAS_PRICE_STEP_LOW,
+            average: config.GAS_PRICE_STEP_AVERAGE,
+            high: config.GAS_PRICE_STEP_HIGH,
         },
-        {
-            gascoinDenom,
-            gascoinMinimalDenom,
-            coinDecimals,
-            gascoinGeckoId,
-        },
-    ],
-    feeCurrencies: [
-        {
-            gascoinDenom,
-            gascoinMinimalDenom,
-            coinDecimals,
-            gascoinGeckoId,
-            gasPriceStep: {
-                low: config.GAS_PRICE_STEP_LOW,
-                average: config.GAS_PRICE_STEP_AVERAGE,
-                high: config.GAS_PRICE_STEP_HIGH,
-            },
-        },
-    ],
+    }],
     coinType: config.COIN_TYPE,
     features: config.FEATURES,
     walletUrlForStaking: config.STAKING_URL,
